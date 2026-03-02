@@ -69,7 +69,14 @@ expected_agencies = [
     "scb",
 ]
 
-# code here
+agencies = dbutils.fs.ls(BASE_PATH + "/landing")
+existing_agencies = [agency.name.rstrip("/") for agency in agencies]
+for expected in expected_agencies:
+    if expected in existing_agencies:
+        print(f"{expected} landing zone folder exists.")
+    else:
+        print(f"{expected} landing zone folder doesn't exist.")
+
 
 # COMMAND ----------
 
