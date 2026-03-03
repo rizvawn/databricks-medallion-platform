@@ -25,7 +25,7 @@ BASE_PATH = "/Volumes/ena_dev/default/ena_platform"
 
 # COMMAND ----------
 
-# TODO: Printing the volume directory tree to 3 levels deep by using:
+# Printing the volume directory tree to 3 levels deep by using:
 # dbutils.fs.ls(BASE_PATH) to get the top-level items.
 
 items = dbutils.fs.ls(BASE_PATH)
