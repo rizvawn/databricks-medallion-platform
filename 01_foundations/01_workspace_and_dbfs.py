@@ -41,24 +41,8 @@ for item in items:
                         print("\t\t" + subfolder.path)
 
 # COMMAND ----------
-# %md
-# ### ENA Volume Structure — Annotated
-#
-# Explaining each folder's purpose.
-#
-# | Folder | Purpose |
-# |---|---|
-# | `landing/` | TODO |
-# | `bronze/` | TODO |
-# | `silver/` | TODO |
-# | `gold/` | TODO |
-# | `quarantine/` | TODO |
-# | `checkpoints/` | TODO |
-# | `ml/` | TODO |
 
-# COMMAND ----------
-
-# TODO: Confirming all five agency landing zone folders exist by
+# Confirming all five agency landing zone folders exist by
 # using dbutils.fs.ls() on the landing subfolder.
 
 expected_agencies = [
@@ -80,7 +64,7 @@ for expected in expected_agencies:
 
 # COMMAND ----------
 
-# TODO: Writing a small test file to the Skatteverket landing zone, then reading it back.
+# Writing a small test file to the Skatteverket landing zone, then reading it back.
 # This proves the volume is writable before any real agency data lands there.
 #
 # Steps:
@@ -89,12 +73,8 @@ for expected in expected_agencies:
 # 3. Use dbutils.fs.head() to read it back and print the contents
 # 4. Clean up: use dbutils.fs.rm() to delete the test file
 
-# COMMAND ----------
-# %md
-# ### Learned points:
-#
-# TODO: Answering the following:
-# - What is a Unity Catalog volume, and how does it differ from plain DBFS?
-# - How does `dbutils.fs` interact with a volume path?
-# - Why does the ENA platform separate data into landing / bronze / silver / gold?
-# - What would happen if two agencies accidentally wrote to each other's landing zone?
+TEST_PATH = BASE_PATH + "/landing/skatteverket/test.txt"
+dbutils.fs.put(TEST_PATH, "This is a test string.")
+test_string = dbutils.fs.head(TEST_PATH)
+print(f"Successfully reading: \"{test_string}\" from {TEST_PATH}")
+dbutils.fs.rm(TEST_PATH)
