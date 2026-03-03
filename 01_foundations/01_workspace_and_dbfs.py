@@ -3,18 +3,20 @@
 
 # COMMAND ----------
 # %md
-# # Exercise 1.1 — Workspace, Unity Catalog Volumes, and the ENA Folder Structure
+# # Exercise 1.1: Workspace, Unity Catalog Volumes, and the ENA Folder Structure
 #
-# **Purpose:** Explore the ENA platform's Unity Catalog volume layout using `dbutils.fs`.
-# This is the foundation every subsequent notebook depends on — if the volume structure
-# is wrong, every ingestion and transformation step in later phases will fail.
+# This notebook orients a new DIGG data engineer to the ENA platform's storage layout.
+# Every downstream exercise, ingestion, transformation, streaming, depends on the folder
+# structure created by `SETUP_RUN_ONCE.py`. This notebook verifies that structure exists,
+# is correctly organised, and is writable before any real agency data touches it.
 #
-# **To build:**
-# - A 3-level directory tree of the ENA volume
-# - A verification check confirming all five agency landing zones exist
-# - A file write/read round-trip proving the volume is accessible and writable
+# **What this notebook demonstrates:**
+# - Navigating a Unity Catalog volume using `dbutils.fs`
+# - Verifying that all five agency landing zones are present
+# - Confirming the volume is readable and writable via a file round-trip
 #
-# **Dependencies:** `SETUP_RUN_ONCE.py` must have been run first.
+# **Dependencies:** `SETUP_RUN_ONCE.py` must have been run first to create
+# the `ena_dev` catalog, `default` schema, and `ena_platform` volume.
 
 # COMMAND ----------
 
@@ -78,3 +80,36 @@ dbutils.fs.put(TEST_PATH, "This is a test string.")
 test_string = dbutils.fs.head(TEST_PATH)
 print(f"Successfully reading: \"{test_string}\" from {TEST_PATH}")
 dbutils.fs.rm(TEST_PATH)
+
+# COMMAND ----------
+# %md
+# ## What I Learned
+#
+# **Unity Catalog volume vs DBFS:**
+# A Unity Catalog volume is a governed storage location inside a three-part namespace
+# (`catalog.schema.volume`). Unlike plain DBFS, which is a flat, ungoverned file system
+# accessible to anyone on the workspace, volumes have access controls, audit logs, and
+# lineage tracking applied by Unity Catalog.
+#
+# **How `dbutils.fs` interacts with a volume:**
+# `dbutils.fs` treats a volume path like any other file system path. `ls`, `put`, `head`,
+# and `rm` all work identically, the difference is that every operation is governed and
+# auditable under Unity Catalog.
+#
+# **Why landing / bronze / silver / gold:**
+# Each layer represents a different stage of data trustworthiness. Landing holds raw
+# agency files as delivered. Bronze preserves the source schema with audit columns added.
+# Silver applies cleaning, typing, deduplication, and joins. Gold produces policy-ready
+# aggregations. Separating layers means a failure at Silver never corrupts Bronze data.
+#
+# **What would happen if two agencies wrote to each other's landing zone:**
+# Data isolation would break. DIGG's platform promises each agency that their data is
+# handled under strict accountability. Mixed landing zones would corrupt audit trails,
+# make pipeline errors unattributable, and violate the governance contract with each agency.
+#
+# **Gotchas:**
+# - `dbutils.fs.ls()` returns folder names with a trailing slash, always `.rstrip("/")`
+#   before comparing against expected names.
+# - `dbutils.fs.put()` takes path first, content second.
+#
+# **Next exercise:** `02a_cluster_and_magic.py`, cluster configuration and magic commands.
