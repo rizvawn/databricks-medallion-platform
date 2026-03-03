@@ -51,20 +51,20 @@ shuffle_benchmark(200)
 shuffle_benchmark(8)
 
 # COMMAND ----------
-# %sql
+# Showing catalog schemas using SQL
+# MAGIC %sql
 
--- Showing catalog schemas using SQL
 SHOW SCHEMAS IN ena_dev
 
 # COMMAND ----------
-# %sh
 # Showing python version using bash
+# MAGIC %sh
 
 python --version
 
 # COMMAND ----------
-# %fs
 # Listing the content of the landing zone path using Databricks file system
+# MAGIC %fs
 
 ls /Volumes/ena_dev/default/ena_platform/landing
 
