@@ -2,3 +2,4 @@
 !SETUP_RUN_ONCE.py 
 !README.md
 !01_foundations/**
+!02_spark_core/**
