@@ -1,6 +1,4 @@
 *
-![
-SETUP_RUN_ONCE.py, 
-README.md
-01_foundations/
-]
+!SETUP_RUN_ONCE.py 
+!README.md
+!01_foundations/**
