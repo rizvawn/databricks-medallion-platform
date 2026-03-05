@@ -1,3 +1,6 @@
-.github/*
-!.github/workflows/
-.venv/
+*
+![
+SETUP_RUN_ONCE.py, 
+README.md
+01*/
+]
