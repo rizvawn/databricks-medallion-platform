@@ -1,3 +1,4 @@
+# type: ignore
 # Databricks notebook source
 # MAGIC %md
 # MAGIC ## Exercise 2.1: DataFrame API nd Schema Enforcement
@@ -77,7 +78,8 @@ df_transformed.show(5, truncate=False)
 # COMMAND ----------
 
 # DBTITLE 1,Cell 7
-# Writing a bad row on purpose. Value of municipality_code is given as "abc123" instead of an integer
+# Writing a bad row on purpose. Value of municipality_code is given as "INVALID" instead of an integer
+
 bad_csv_path = f"{BASE_PATH}/landing/skatteverket/bad_test.csv"
 dbutils.fs.put(
     bad_csv_path,
